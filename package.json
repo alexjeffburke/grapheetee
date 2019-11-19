@@ -1,0 +1,40 @@
+{
+  "name": "grapheetee",
+  "version": "0.0.0",
+  "description": "",
+  "main": "lib/GraphQlClient.js",
+  "scripts": {
+    "coverage": "nyc --reporter=text --reporter=lcov mocha",
+    "lint": "eslint . && prettier --check '**/*.js'",
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "Alex J Burke @alexjeffburke <ajb@one.com>",
+  "repository": "git://github.com/One-com/grapheetee",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.7.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-mocha": "^6.2.1",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "fetchception": "^1.1.0",
+    "mocha": "^6.2.2",
+    "nyc": "^14.1.1",
+    "prettier": "^1.19.1",
+    "unexpected": "^11.8.1",
+    "unexpected-sinon": "^10.11.2"
+  },
+  "dependencies": {
+    "createerror": "^1.1.0",
+    "esm": "^3.2.25",
+    "form-data": "^3.0.0",
+    "httperrors": "^2.0.1",
+    "lodash.set": "^4.3.2",
+    "node-fetch": "^2.6.0",
+    "sinon": "^7.5.0"
+  }
+}
