@@ -10,6 +10,16 @@ describe("GraphQlAction", () => {
     expect(GraphQlAction, "to be a function");
   });
 
+  it("should throw when no type is set a function", () => {
+    expect(
+      () => {
+        new GraphQlAction({ type: null });
+      },
+      "to throw",
+      "Invalid type"
+    );
+  });
+
   it("should create a query as an instance of GraphQlAction", () => {
     const action = new GraphQlAction({ type: GRAPHQL_QUERY });
     expect(action, "to be a", GraphQlAction);
