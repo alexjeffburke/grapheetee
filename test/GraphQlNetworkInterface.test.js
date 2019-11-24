@@ -71,8 +71,7 @@ describe("GraphQlNetworkInterface", () => {
         }
       },
       () => {
-        const action = GraphQlAction.query({
-          query: `
+        const action = GraphQlAction.query(`
               query {
                   getMailFolders {
                       mailFolders {
@@ -80,8 +79,7 @@ describe("GraphQlNetworkInterface", () => {
                       }
                   }
               }
-          `
-        });
+        `);
         const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
@@ -114,13 +112,11 @@ describe("GraphQlNetworkInterface", () => {
         }
       },
       () => {
-        const action = GraphQlAction.query({
-          query: `
+        const action = GraphQlAction.query(`
               query {
                   foobar
               }
-          `
-        });
+        `);
         let onSuccessArgs;
         const onSuccess = (...args) => (onSuccessArgs = args);
         const network = new GraphQlNetworkInterface({ url, onSuccess });
@@ -151,8 +147,7 @@ describe("GraphQlNetworkInterface", () => {
         }
       },
       () => {
-        const action = GraphQlAction.query({
-          query: `
+        const action = GraphQlAction.query(`
               query {
                   getMailFolders {
                       error {
@@ -163,8 +158,7 @@ describe("GraphQlNetworkInterface", () => {
                       }
                   }
               }
-          `
-        });
+        `);
         const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
@@ -199,8 +193,7 @@ describe("GraphQlNetworkInterface", () => {
         }
       },
       () => {
-        const action = GraphQlAction.query({
-          query: `
+        const action = GraphQlAction.query(`
               query {
                   getMailFolders {
                       error {
@@ -219,8 +212,7 @@ describe("GraphQlNetworkInterface", () => {
                       }
                   }
               }
-          `
-        });
+        `);
         const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
@@ -249,9 +241,7 @@ describe("GraphQlNetworkInterface", () => {
       });
     const network = new GraphQlNetworkInterface({ url, fetch });
 
-    const action = GraphQlAction.query({
-      query: "query { username }"
-    });
+    const action = GraphQlAction.query("query { username }");
 
     return expect(
       network.request(action),
@@ -269,9 +259,7 @@ describe("GraphQlNetworkInterface", () => {
       });
     const network = new GraphQlNetworkInterface({ url, fetch });
 
-    const action = GraphQlAction.query({
-      query: "query { username }"
-    });
+    const action = GraphQlAction.query("query { username }");
 
     return expect(
       network.request(action),
@@ -301,8 +289,7 @@ describe("GraphQlNetworkInterface", () => {
         }
       },
       () => {
-        const action = GraphQlAction.query({
-          query: `
+        const action = GraphQlAction.query(`
               query Foo {
                   getMail(id: "sdaf") {
                       mail {
@@ -310,8 +297,7 @@ describe("GraphQlNetworkInterface", () => {
                       }
                   }
               }
-          `
-        });
+        `);
         const network = new GraphQlNetworkInterface({ url });
 
         return expect(
@@ -343,8 +329,7 @@ describe("GraphQlNetworkInterface", () => {
         }
       },
       () => {
-        const action = GraphQlAction.query({
-          query: `
+        const action = GraphQlAction.query(`
               query Foo {
                   getMail(id: "sdaf") {
                       mail {
@@ -352,8 +337,7 @@ describe("GraphQlNetworkInterface", () => {
                       }
                   }
               }
-          `
-        });
+        `);
         const network = new GraphQlNetworkInterface({ url });
 
         return expect(
@@ -377,8 +361,7 @@ describe("GraphQlNetworkInterface", () => {
         }
       },
       () => {
-        const action = GraphQlAction.query({
-          query: `
+        const action = GraphQlAction.query(`
               query Foo {
                   getMail(id: "sdaf") {
                       mail {
@@ -386,8 +369,7 @@ describe("GraphQlNetworkInterface", () => {
                       }
                   }
               }
-          `
-        });
+        `);
         const network = new GraphQlNetworkInterface({ url });
 
         return expect(
@@ -416,16 +398,14 @@ describe("GraphQlNetworkInterface", () => {
         }
       },
       () => {
-        const action = GraphQlAction.mutation({
-          query: `
+        const action = GraphQlAction.mutation(`
               mutation foo {
                   buildMail(id: "foo") {
                       error { type }
                       mail { id }
                   }
               }
-          `
-        });
+        `);
         const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
@@ -459,8 +439,8 @@ describe("GraphQlNetworkInterface", () => {
         }
       },
       () => {
-        const action = GraphQlAction.mutation({
-          query: `
+        const action = GraphQlAction.mutation(
+          `
               mutation foo {
                   buildMail(id: "foo") {
                       error { type }
@@ -473,11 +453,13 @@ describe("GraphQlNetworkInterface", () => {
                   }
               }
           `,
-          uploads: [
-            { name: "foo", payload: "foostring" },
-            { name: "bar", payload: "barstring" }
-          ]
-        });
+          {
+            uploads: [
+              { name: "foo", payload: "foostring" },
+              { name: "bar", payload: "barstring" }
+            ]
+          }
+        );
         const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
@@ -519,8 +501,8 @@ describe("GraphQlNetworkInterface", () => {
       ],
       () => {
         const actions = [
-          GraphQlAction.query({ query: "query { foo }" }),
-          GraphQlAction.query({ query: "query { bar }" })
+          GraphQlAction.query("query { foo }"),
+          GraphQlAction.query("query { bar }")
         ];
         const network = new GraphQlNetworkInterface({ url });
 
@@ -569,8 +551,7 @@ describe("GraphQlNetworkInterface", () => {
           }
         },
         () => {
-          const action1 = GraphQlAction.query({
-            query: `
+          const action1 = GraphQlAction.query(`
                   query {
                       getPreferences {
                           preferences {
@@ -582,10 +563,8 @@ describe("GraphQlNetworkInterface", () => {
                           }
                       }
                   }
-              `
-          });
-          const action2 = GraphQlAction.query({
-            query: `
+          `);
+          const action2 = GraphQlAction.query(`
                   query {
                       getMailsById {
                           error {
@@ -596,8 +575,7 @@ describe("GraphQlNetworkInterface", () => {
                           }
                       }
                   }
-              `
-          });
+          `);
           const network = new GraphQlNetworkInterface({ url });
 
           return expect(

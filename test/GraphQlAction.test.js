@@ -21,37 +21,58 @@ describe("GraphQlAction", () => {
   });
 
   it("should create a query as an instance of GraphQlAction", () => {
-    const action = new GraphQlAction({ type: GRAPHQL_QUERY });
+    const action = new GraphQlAction({
+      type: GRAPHQL_QUERY,
+      query: "query {}"
+    });
     expect(action, "to be a", GraphQlAction);
   });
 
   it("should return false from isMutation", () => {
-    const action = new GraphQlAction({ type: GRAPHQL_QUERY });
+    const action = new GraphQlAction({
+      type: GRAPHQL_QUERY,
+      query: "query {}"
+    });
     expect(action.isMutation(), "to be false");
   });
 
   it("should return true from isQuery", () => {
-    const action = new GraphQlAction({ type: GRAPHQL_QUERY });
+    const action = new GraphQlAction({
+      type: GRAPHQL_QUERY,
+      query: "query {}"
+    });
     expect(action.isQuery(), "to be true");
   });
 
   it("should create a mutation as an instance of GraphQlAction", () => {
-    const action = new GraphQlAction({ type: GRAPHQL_MUTATION });
+    const action = new GraphQlAction({
+      type: GRAPHQL_MUTATION,
+      query: "mutation {}"
+    });
     expect(action, "to be a", GraphQlAction);
   });
 
   it("should return true from isMutation", () => {
-    const action = new GraphQlAction({ type: GRAPHQL_MUTATION });
+    const action = new GraphQlAction({
+      type: GRAPHQL_MUTATION,
+      query: "mutation {}"
+    });
     expect(action.isMutation(), "to be true");
   });
 
   it("should return false from isQuery", () => {
-    const action = new GraphQlAction({ type: GRAPHQL_MUTATION });
+    const action = new GraphQlAction({
+      type: GRAPHQL_MUTATION,
+      query: "mutation {}"
+    });
     expect(action.isQuery(), "to be false");
   });
 
   it("should be able to resolve a returned promise", () => {
-    const action = new GraphQlAction({ type: GRAPHQL_QUERY });
+    const action = new GraphQlAction({
+      type: GRAPHQL_QUERY,
+      query: "query {}"
+    });
     const promise = action.getPromise();
 
     action.resolve("foo");
@@ -60,7 +81,10 @@ describe("GraphQlAction", () => {
   });
 
   it("should be able to reject a returned promise", () => {
-    const action = new GraphQlAction({ type: GRAPHQL_QUERY });
+    const action = new GraphQlAction({
+      type: GRAPHQL_QUERY,
+      query: "query {}"
+    });
     const promise = action.getPromise();
 
     action.reject("foo");
@@ -74,14 +98,16 @@ describe("GraphQlAction", () => {
     });
 
     it("should create a query as an instance of GraphQlAction", () => {
-      const action = GraphQlAction.query();
+      const action = GraphQlAction.query("query {}");
       expect(action, "to be a", GraphQlAction);
     });
 
     it("should create a query", () => {
-      const action = GraphQlAction.query();
+      const payload = "query { error }";
+      const action = GraphQlAction.query(payload);
       expect(action, "to satisfy", {
-        type: GRAPHQL_QUERY
+        type: GRAPHQL_QUERY,
+        query: payload
       });
     });
   });
@@ -92,15 +118,51 @@ describe("GraphQlAction", () => {
     });
 
     it("should create a mutation as an instance of GraphQlAction", () => {
-      const action = GraphQlAction.mutation();
+      const action = GraphQlAction.mutation("mutation {}");
       expect(action, "to be a", GraphQlAction);
     });
 
     it("should create a mutation", () => {
-      const action = GraphQlAction.mutation();
+      const payload = "mutation { error }";
+      const action = GraphQlAction.mutation(payload);
       expect(action, "to satisfy", {
-        type: GRAPHQL_MUTATION
+        type: GRAPHQL_MUTATION,
+        query: payload
       });
+    });
+  });
+
+  describe("when validating the GraphQL payload", () => {
+    it("should throw on type mismatch (query)", () => {
+      expect(
+        () => {
+          GraphQlAction.mutation("query {}");
+        },
+        "to throw",
+        "GraqhQL body did not match action. Did you mean to call .query()?"
+      );
+    });
+
+    it("should throw on type mismatch (mutation)", () => {
+      expect(
+        () => {
+          GraphQlAction.query("mutation {}");
+        },
+        "to throw",
+        "GraqhQL body did not match action. Did you mean to call .mutation()?"
+      );
+    });
+
+    it("should permit a name on the query", () => {
+      expect(() => {
+        GraphQlAction.query("query Foo {}");
+      }, "not to throw");
+    });
+
+    it("should permit any amount of leading and trailing whitespace", () => {
+      expect(() => {
+        GraphQlAction.query("\n  \n  \n query Foo {}\n   \n   \n");
+      }, "not to throw");
     });
   });
 });

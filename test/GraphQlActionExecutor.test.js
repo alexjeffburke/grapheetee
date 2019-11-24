@@ -20,7 +20,7 @@ describe("GraphQlActionExecutor", () => {
     const request = () => Promise.resolve("The Result");
     actionExecutor.network.request = request;
 
-    const action = GraphQlAction.query({ query: "foobar" });
+    const action = GraphQlAction.query("query { foobar }");
 
     actionExecutor.execute(action);
 
@@ -36,7 +36,7 @@ describe("GraphQlActionExecutor", () => {
     const request = () => Promise.reject(new Error("The Error"));
     actionExecutor.network.request = request;
 
-    const action = GraphQlAction.query({ query: "foobar" });
+    const action = GraphQlAction.query("query { foobar }");
 
     actionExecutor.execute(action);
 
@@ -55,8 +55,8 @@ describe("GraphQlActionExecutor", () => {
       Promise.resolve([{ data: "The result 1" }, { data: "The result 2" }]);
     actionExecutor.network.batchRequest = batchRequest;
 
-    const action1 = GraphQlAction.query({ query: "query { username }" });
-    const action2 = GraphQlAction.query({ query: "query { username, age }" });
+    const action1 = GraphQlAction.query("query { username }");
+    const action2 = GraphQlAction.query("query { username, age }");
 
     actionExecutor.execute(action1);
     actionExecutor.execute(action2);

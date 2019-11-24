@@ -52,15 +52,14 @@ describe("GraphQlClient", () => {
     const graphQlClient = new GraphQlClient({ url: "/", fetch: () => {} });
     graphQlClient.actionExecutor = actionExecutor;
 
-    const res = graphQlClient.query({
-      query: "foo",
+    const res = graphQlClient.query("query { foo }", {
       variables: {}
     });
 
     expect(res, "to be a", Promise);
 
     expect(actionExecutor.queue, "to have items satisfying", {
-      query: "foo",
+      query: "query { foo }",
       resolve: expect.it("to be a function")
     });
 
@@ -74,15 +73,14 @@ describe("GraphQlClient", () => {
     const graphQlClient = new GraphQlClient({ url: "/", fetch: () => {} });
     graphQlClient.actionExecutor = actionExecutor;
 
-    const res = graphQlClient.mutate({
-      query: "foo",
+    const res = graphQlClient.mutate("mutation { foo }", {
       variables: {}
     });
 
     expect(res, "to be a", Promise);
 
     expect(actionExecutor.queue, "to have items satisfying", {
-      query: "foo",
+      query: "mutation { foo }",
       resolve: expect.it("to be a function")
     });
 
