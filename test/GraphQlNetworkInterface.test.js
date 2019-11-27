@@ -90,6 +90,43 @@ describe("GraphQlNetworkInterface", () => {
       }
     ));
 
+  it("should allow on onSuccess callback", () =>
+    fetchception(
+      {
+        request: "POST /api/graphql",
+        response: {
+          headers: {
+            "X-Custom-Header": "woot"
+          },
+          body: {
+            data: {
+              foobar: "baz"
+            }
+          }
+        }
+      },
+      () => {
+        const action = GraphQlAction.query({
+          query: `
+              query {
+                  foobar
+              }
+          `
+        });
+        let onSuccessArgs;
+        const onSuccess = (...args) => (onSuccessArgs = args);
+        const network = new GraphQlNetworkInterface({ onSuccess });
+
+        return expect(network.request(action), "to be fulfilled").then(() => {
+          expect(onSuccessArgs, "to satisfy", [
+            expect.it(value =>
+              expect(value.headers.get("X-Custom-Header"), "to equal", "woot")
+            )
+          ]);
+        });
+      }
+    ));
+
   it('should report an error on the query if one was contained within "errors"', () =>
     fetchception(
       {
