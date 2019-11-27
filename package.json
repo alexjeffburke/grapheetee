@@ -11,6 +11,11 @@
     "test": "mocha"
   },
   "keywords": [],
+  "files": [
+    "node.js",
+    "node.js.map",
+    "lib"
+  ],
   "author": "Alex J Burke @alexjeffburke <ajb@one.com>",
   "repository": "git://github.com/One-com/grapheetee",
   "license": "BSD-3-Clause",
