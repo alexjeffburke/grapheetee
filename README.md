@@ -13,13 +13,13 @@ import Grapheetee from "grapheetee";
 const client = new Grapheetee({ url: "/api" });
 ```
 
-Note that
+Note that a base `url` must be supplied as an option to the constructor.
 
 ### Node
 
-Since the client is fetch based, those libraries must be added when
-the module is used on node. This handled automatically by pulling in
-the node version of the library as follows:
+Since the client is fetch based, libraries that provide these interfaces
+must be provided when the module is used on node. These details are handled
+automatically by providing a node ready version of the library:
 
 ```js
 const Grapheetee = require("grapheetee/node");
