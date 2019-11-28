@@ -24,6 +24,7 @@
     "fetchception": "^1.1.0",
     "mocha": "^6.2.2",
     "nyc": "^14.1.1",
+    "node-fetch": "^2.6.0",
     "prettier": "^1.19.1",
     "unexpected": "^11.8.1",
     "unexpected-sinon": "^10.11.2"
@@ -34,7 +35,6 @@
     "form-data": "^3.0.0",
     "httperrors": "^2.0.1",
     "lodash.set": "^4.3.2",
-    "node-fetch": "^2.6.0",
     "sinon": "^7.5.0"
   }
 }

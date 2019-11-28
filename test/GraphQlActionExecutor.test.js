@@ -6,9 +6,13 @@ import GraphQlAction from "../lib/GraphQlAction";
 
 describe("GraphQlActionExecutor", () => {
   let actionExecutor;
+
   beforeEach(() => {
-    const graphQlNetworkInterface = new GraphQlNetworkInterface();
-    actionExecutor = new GraphQlActionExecutor(graphQlNetworkInterface);
+    actionExecutor = new GraphQlActionExecutor(
+      new GraphQlNetworkInterface({
+        fetch: () => {}
+      })
+    );
   });
 
   it("should resolve an action", () => {

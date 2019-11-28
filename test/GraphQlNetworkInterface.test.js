@@ -1,35 +1,40 @@
 import expect from "unexpected";
-import fetchceptionModule from "fetchception";
+import fetchception from "fetchception";
 import httpErrors from "httperrors";
 import sinon from "sinon";
+
+import FormData from "form-data";
+import { Response } from "node-fetch";
 
 import GraphQlNetworkInterface from "../lib/GraphQlNetworkInterface";
 import GraphQlAction from "../lib/GraphQlAction";
 import GraphQlSyntaxError from "../lib/GraphQlSyntaxError";
 import UnknownHttpError from "../lib/UnknownHttpError";
 
+const fetch = { Response };
+
 describe("GraphQlNetworkInterface", () => {
-  let network;
-  let fetchception;
+  before(() => {
+    // FIXME: window must be global for fetchception to opearate correctly
+    global.window = global;
+    global.fetch = fetch;
+    global.Response = fetch.Response;
+    global.FormData = FormData;
+  });
 
-  beforeEach(() => {
-    network = new GraphQlNetworkInterface();
-    // make fetchception work with .fetch property
-    global.fetch = network.fetch;
-    global.Response = network.fetch.Response;
-    fetchception = (mocks, factory) => {
-      fetchceptionModule(mocks, () => {
-        network.fetch = global.fetch;
-
-        return factory();
-      });
-    };
+  after(() => {
+    delete global.fetch;
+    delete global.Response;
+    delete global.FormData;
+    delete global.window;
   });
 
   it("should throw when executing an invalid action", () => {
     expect(
       () => {
-        network.dispatch({ query: "foo" });
+        new GraphQlNetworkInterface({ fetch: () => {} }).dispatch({
+          query: "foo"
+        });
       },
       "to throw",
       "Invalid GraphQlAction."
@@ -37,6 +42,7 @@ describe("GraphQlNetworkInterface", () => {
   });
 
   it("should dispatch a single request", () => {
+    const network = new GraphQlNetworkInterface({ fetch: () => {} });
     network.request = sinon.spy().named("network.request");
 
     network.dispatch({ query: "foo" });
@@ -75,6 +81,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
+        const network = new GraphQlNetworkInterface();
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -157,6 +164,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
+        const network = new GraphQlNetworkInterface();
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -212,6 +220,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
+        const network = new GraphQlNetworkInterface();
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -231,11 +240,13 @@ describe("GraphQlNetworkInterface", () => {
     ));
 
   it("should report an error on a known http status code", () => {
-    sinon.stub(network, "fetch").returns(
-      Promise.resolve({
+    const fetch = sinon
+      .stub()
+      .named("fetch")
+      .resolves({
         status: 400
-      })
-    );
+      });
+    const network = new GraphQlNetworkInterface({ fetch });
 
     const action = GraphQlAction.query({
       query: "query { username }"
@@ -249,11 +260,13 @@ describe("GraphQlNetworkInterface", () => {
   });
 
   it("should report an error on an unknown http status code", () => {
-    sinon.stub(network, "fetch").returns(
-      Promise.resolve({
+    const fetch = sinon
+      .stub()
+      .named("fetch")
+      .resolves({
         status: 537
-      })
-    );
+      });
+    const network = new GraphQlNetworkInterface({ fetch });
 
     const action = GraphQlAction.query({
       query: "query { username }"
@@ -298,6 +311,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
+        const network = new GraphQlNetworkInterface();
 
         return expect(
           network.request(action),
@@ -339,6 +353,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
+        const network = new GraphQlNetworkInterface();
 
         return expect(
           network.request(action),
@@ -372,6 +387,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
+        const network = new GraphQlNetworkInterface();
 
         return expect(
           network.request(action),
@@ -409,6 +425,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
+        const network = new GraphQlNetworkInterface();
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -460,6 +477,7 @@ describe("GraphQlNetworkInterface", () => {
             { name: "bar", payload: "barstring" }
           ]
         });
+        const network = new GraphQlNetworkInterface();
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -503,6 +521,7 @@ describe("GraphQlNetworkInterface", () => {
           GraphQlAction.query({ query: "query { foo }" }),
           GraphQlAction.query({ query: "query { bar }" })
         ];
+        const network = new GraphQlNetworkInterface();
 
         return expect(network.dispatch(actions), "to be fulfilled with", {
           errors: null,
@@ -578,6 +597,7 @@ describe("GraphQlNetworkInterface", () => {
                   }
               `
           });
+          const network = new GraphQlNetworkInterface();
 
           return expect(
             network.batchRequest([action1, action2]),
