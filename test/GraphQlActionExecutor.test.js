@@ -10,6 +10,7 @@ describe("GraphQlActionExecutor", () => {
   beforeEach(() => {
     actionExecutor = new GraphQlActionExecutor(
       new GraphQlNetworkInterface({
+        url: "/",
         fetch: () => {}
       })
     );

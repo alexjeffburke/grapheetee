@@ -17,10 +17,30 @@ describe("GraphQlClient", () => {
     expect(GraphQlClient, "to be a function");
   });
 
+  it("should throw if no url is provided", () => {
+    expect(
+      () => {
+        new GraphQlClient({});
+      },
+      "to throw",
+      "Missing base url"
+    );
+  });
+
+  it("should throw if an empty url is provided", () => {
+    expect(
+      () => {
+        new GraphQlClient({ url: "" });
+      },
+      "to throw",
+      "Missing base url"
+    );
+  });
+
   it("should throw if no fetch is provided", () => {
     expect(
       () => {
-        new GraphQlClient();
+        new GraphQlClient({ url: "/" });
       },
       "to throw",
       "fetch() implementation was not provided."
@@ -29,7 +49,7 @@ describe("GraphQlClient", () => {
 
   it("should execute a query", () => {
     const actionExecutor = createMockActionExecutor();
-    const graphQlClient = new GraphQlClient({ fetch: () => {} });
+    const graphQlClient = new GraphQlClient({ url: "/", fetch: () => {} });
     graphQlClient.actionExecutor = actionExecutor;
 
     const res = graphQlClient.query({
@@ -51,7 +71,7 @@ describe("GraphQlClient", () => {
 
   it("should execute a mutate", () => {
     const actionExecutor = createMockActionExecutor();
-    const graphQlClient = new GraphQlClient({ fetch: () => {} });
+    const graphQlClient = new GraphQlClient({ url: "/", fetch: () => {} });
     graphQlClient.actionExecutor = actionExecutor;
 
     const res = graphQlClient.mutate({

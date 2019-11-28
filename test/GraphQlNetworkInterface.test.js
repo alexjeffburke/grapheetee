@@ -12,6 +12,7 @@ import GraphQlSyntaxError from "../lib/GraphQlSyntaxError";
 import UnknownHttpError from "../lib/UnknownHttpError";
 
 const fetch = { Response };
+const url = "/api/graphql";
 
 describe("GraphQlNetworkInterface", () => {
   before(() => {
@@ -32,7 +33,7 @@ describe("GraphQlNetworkInterface", () => {
   it("should throw when executing an invalid action", () => {
     expect(
       () => {
-        new GraphQlNetworkInterface({ fetch: () => {} }).dispatch({
+        new GraphQlNetworkInterface({ url: "/", fetch: () => {} }).dispatch({
           query: "foo"
         });
       },
@@ -42,7 +43,7 @@ describe("GraphQlNetworkInterface", () => {
   });
 
   it("should dispatch a single request", () => {
-    const network = new GraphQlNetworkInterface({ fetch: () => {} });
+    const network = new GraphQlNetworkInterface({ url: "/", fetch: () => {} });
     network.request = sinon.spy().named("network.request");
 
     network.dispatch({ query: "foo" });
@@ -81,7 +82,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
-        const network = new GraphQlNetworkInterface();
+        const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -122,7 +123,7 @@ describe("GraphQlNetworkInterface", () => {
         });
         let onSuccessArgs;
         const onSuccess = (...args) => (onSuccessArgs = args);
-        const network = new GraphQlNetworkInterface({ onSuccess });
+        const network = new GraphQlNetworkInterface({ url, onSuccess });
 
         return expect(network.request(action), "to be fulfilled").then(() => {
           expect(onSuccessArgs, "to satisfy", [
@@ -164,7 +165,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
-        const network = new GraphQlNetworkInterface();
+        const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -220,7 +221,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
-        const network = new GraphQlNetworkInterface();
+        const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -246,7 +247,7 @@ describe("GraphQlNetworkInterface", () => {
       .resolves({
         status: 400
       });
-    const network = new GraphQlNetworkInterface({ fetch });
+    const network = new GraphQlNetworkInterface({ url, fetch });
 
     const action = GraphQlAction.query({
       query: "query { username }"
@@ -266,7 +267,7 @@ describe("GraphQlNetworkInterface", () => {
       .resolves({
         status: 537
       });
-    const network = new GraphQlNetworkInterface({ fetch });
+    const network = new GraphQlNetworkInterface({ url, fetch });
 
     const action = GraphQlAction.query({
       query: "query { username }"
@@ -311,7 +312,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
-        const network = new GraphQlNetworkInterface();
+        const network = new GraphQlNetworkInterface({ url });
 
         return expect(
           network.request(action),
@@ -353,7 +354,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
-        const network = new GraphQlNetworkInterface();
+        const network = new GraphQlNetworkInterface({ url });
 
         return expect(
           network.request(action),
@@ -387,7 +388,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
-        const network = new GraphQlNetworkInterface();
+        const network = new GraphQlNetworkInterface({ url });
 
         return expect(
           network.request(action),
@@ -425,7 +426,7 @@ describe("GraphQlNetworkInterface", () => {
               }
           `
         });
-        const network = new GraphQlNetworkInterface();
+        const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -477,7 +478,7 @@ describe("GraphQlNetworkInterface", () => {
             { name: "bar", payload: "barstring" }
           ]
         });
-        const network = new GraphQlNetworkInterface();
+        const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.request(action), "when fulfilled", "to satisfy", {
           data: {
@@ -521,7 +522,7 @@ describe("GraphQlNetworkInterface", () => {
           GraphQlAction.query({ query: "query { foo }" }),
           GraphQlAction.query({ query: "query { bar }" })
         ];
-        const network = new GraphQlNetworkInterface();
+        const network = new GraphQlNetworkInterface({ url });
 
         return expect(network.dispatch(actions), "to be fulfilled with", {
           errors: null,
@@ -597,7 +598,7 @@ describe("GraphQlNetworkInterface", () => {
                   }
               `
           });
-          const network = new GraphQlNetworkInterface();
+          const network = new GraphQlNetworkInterface({ url });
 
           return expect(
             network.batchRequest([action1, action2]),
