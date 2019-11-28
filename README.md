@@ -53,9 +53,5 @@ instance.mutation({
 
 ## License
 
-simple-search-language is licensed under a standard
-3-clause BSD license -- see the `LICENSE`-file for details.
-
-```
-
-```
+grapheetee is licensed under a standard 3-clause BSD
+license -- see the `LICENSE`-file for details.
