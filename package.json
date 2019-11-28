@@ -1,6 +1,6 @@
 {
   "name": "grapheetee",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Fetch based GraphQL client.",
   "main": "lib/GraphQlClient.js",
   "scripts": {
