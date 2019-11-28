@@ -1,7 +1,7 @@
 {
   "name": "grapheetee",
   "version": "0.0.0",
-  "description": "",
+  "description": "Fetch based GraphQL client.",
   "main": "lib/GraphQlClient.js",
   "scripts": {
     "build": "rollup -c",
@@ -10,7 +10,11 @@
     "prepublishOnly": "npm run build",
     "test": "mocha"
   },
-  "keywords": [],
+  "keywords": [
+    "GraphQL",
+    "fetch",
+    "client"
+  ],
   "files": [
     "node.js",
     "node.js.map",
